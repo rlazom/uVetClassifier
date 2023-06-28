@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../common/providers/loader_state.dart';
 import '../../../common/providers/user_provider.dart';
+import '../../../common/routes.dart';
 import '../../../services/db_service.dart';
-import '../../home/view/home_page.dart';
 
 class MainViewModel extends LoaderViewModel {
   final DbService dbService = DbService();
@@ -29,9 +29,9 @@ class MainViewModel extends LoaderViewModel {
     if (itsFirstTime) {
       sharedPreferencesService.setItsFirstTime(false);
       // navigator.toRoute(OnBoardingPage.route, pushAndReplace: true);
-      navigator.toRoute(HomePage.route, pushAndReplace: true);
+      navigator.toRoute(HomeModule.route, pushAndReplace: true);
     } else {
-      navigator.toRoute(HomePage.route, pushAndReplace: true);
+      navigator.toRoute(HomeModule.route, pushAndReplace: true);
     }
   }
 }

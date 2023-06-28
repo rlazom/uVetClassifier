@@ -6,7 +6,6 @@ import '../view_model/home_view_model.dart';
 import '../widgets/product_tile.dart';
 
 class HomePage extends StatelessWidget {
-  static const String route = '/home';
   final HomeViewModel viewModel;
 
   const HomePage({Key? key, required this.viewModel}) : super(key: key);

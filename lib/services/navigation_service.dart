@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:u_vet_classifyer/modules/home/view/home_page.dart';
+import '../common/routes.dart';
 
 class NavigationService {
   static final NavigationService _navigationService = NavigationService._();
@@ -23,9 +23,9 @@ class NavigationService {
   Future<T?> pushNamedAndRemoveUntilHome<T>(String routeTo) async {
     return state!.pushNamedAndRemoveUntil(
         routeTo,
-        (Route<dynamic> route) => routeTo == HomePage.route
+        (Route<dynamic> route) => routeTo == HomeModule.route
             ? false
-            : route.settings.name == HomePage.route);
+            : route.settings.name == HomeModule.route);
   }
 
   pop({BuildContext? context, var arguments}) {
