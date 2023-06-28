@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../common/keys.dart';
@@ -26,23 +25,37 @@ class DbService {
     _supabase = Supabase.instance.client;
   }
 
-  Future<Map> searchByBarcode(String barcode) async {
+  Future<Map?> searchByBarcode(String barcode) async {
     print('searchByBarcode()...');
     var response;
-    Map data;
+    Map? data = {};
 
     print('searchByBarcode() - fetching data from m_barcode... [barcode eq "$barcode"]');
-    response = await _supabase.from('m_barcode').select('id_product').eq('barcode', barcode).single();
-    print('searchByBarcode() - fetching data from m_barcode...DONE - response: "$response"');
-    data = response;
+    try {
+      // response = await _supabase.from('m_barcode').select('id_product').eq('barcode', barcode).single();
+      response = await _supabase.from('m_barcode').select('id_product').eq('barcode', barcode).limit(1);
+      print('searchByBarcode() - fetching data from m_barcode...DONE - response: "$response"');
+    } catch (e) {
+      print('searchByBarcode() - fetching data from m_barcode...ERROR - e: "$e"');
+      return null;
+    }
 
-    String idProduct = data['id_product'];
+    data = (response as List).firstOrNull;
+
+    String? idProduct = data?['id_product'];
     print('searchByBarcode() - idProduct: "$idProduct"');
 
-    print('searchByBarcode() - fetching data from c_products... [uuid eq "$idProduct"]');
-    response = await _supabase.from('c_products').select().eq('uuid', idProduct).single();
-    print('searchByBarcode() - fetching data from c_products...DONE - response: "$response"');
-    data = response;
+    if(idProduct != null) {
+      print('searchByBarcode() - fetching data from c_products... [uuid eq "$idProduct"]');
+      try {
+        response = await _supabase.from('c_products').select().eq('uuid', idProduct).single();
+      } catch (e) {
+        print('searchByBarcode() - fetching data from c_products...ERROR - e: "$e"');
+        return null;
+      }
+      print('searchByBarcode() - fetching data from c_products...DONE - response: "$response"');
+      data = response;
+    }
 
     return data;
   }

@@ -57,8 +57,8 @@ class HomeViewModel extends LoaderViewModel {
     productNameCtrl.text = result;
     debugPrint('scan() - barcodeScanResult: "$result"');
 
-    Map data = await dbService.searchByBarcode(result);
-    productListNotifier.value = [data];
+    Map? data = await dbService.searchByBarcode(result);
+    productListNotifier.value = (data?.isEmpty ?? true) ? [] : [data!];
     markAsSuccess();
   }
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/widgets/loading_blur_wdt.dart';
 import '../view_model/home_view_model.dart';
+import '../widgets/product_tile.dart';
 
 class HomePage extends StatelessWidget {
   static const String route = '/home';
@@ -73,19 +73,28 @@ class HomePage extends StatelessWidget {
                           builder: (context, productList, _) {
                             List<Widget> list = [];
                             if (productList != null) {
-                              list = productList.map((e) {
-                                String product =
-                                    e['product_id'] + ' - ' + e['name'];
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: ProductTile(
-                                    prefixIcon:
-                                        const Icon(Icons.assignment_outlined),
-                                    text: product,
-                                    fn: (){},
-                                  ),
-                                );
-                              }).toList();
+                              if(productList.isEmpty) {
+                                list = [const ProductTile(
+                                  prefixIcon:
+                                  Icon(Icons.assignment_late_outlined),
+                                  text: 'No products',
+                                  fn: null,
+                                )];
+                              } else {
+                                list = productList.map((e) {
+                                  String product =
+                                      e['product_id'] + ' - ' + e['name'];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: ProductTile(
+                                      prefixIcon:
+                                      const Icon(Icons.assignment_outlined),
+                                      text: product,
+                                      fn: () {},
+                                    ),
+                                  );
+                                }).toList();
+                              }
                             }
                             return Column(
                               mainAxisSize: MainAxisSize.min,
@@ -100,60 +109,6 @@ class HomePage extends StatelessWidget {
             ],
           );
         }),
-      ),
-    );
-  }
-}
-
-class ProductTile extends StatelessWidget {
-  final Widget? prefixIcon;
-  final String text;
-  final VoidCallback? fn;
-
-  const ProductTile({
-    super.key,
-    required this.prefixIcon,
-    required this.text,
-    this.fn,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white12,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        onTap: fn,
-        child: Row(
-          children: [
-            if(prefixIcon != null)
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: prefixIcon,
-                ),
-              ),
-            // prefixIcon ?? const SizedBox.shrink(),
-            const SizedBox(width: 8.0),
-            Expanded(
-              flex: 9,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 4.0,
-                ),
-                child: Text(
-                  text,
-                  style: const TextStyle(fontSize: 14),
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
