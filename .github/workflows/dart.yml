@@ -37,6 +37,9 @@ jobs:
       # - name: Verify formatting
       #   run: dart format --output=none --set-exit-if-changed .
 
+      - name: Get app version
+        run: echo "::set-env name=APP_VERSION::$(dart pub get --version | awk '{print $1}')"
+
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: dart analyze
@@ -53,5 +56,5 @@ jobs:
       - name: Publish APK
         uses: actions/upload-artifact@v2
         with:
-          name: uVetClassifier.apk
+          name: uVetClassifier_v${{ env.APP_VERSION }}.apk
           path: build/app/outputs/flutter-apk/app-release.apk
