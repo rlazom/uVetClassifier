@@ -12,19 +12,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('uVetClassifier'),
-      ),
-      body: ChangeNotifierProvider(
-        create: (context) => HomeViewModel(),
-        child: Consumer<HomeViewModel>(builder: (context, viewModel, _) {
-          Widget loadingWdt = const SizedBox.shrink();
+    return ChangeNotifierProvider<HomeViewModel>(
+      create: (context) => HomeViewModel(),
+      child: Consumer<HomeViewModel>(builder: (context, viewModel, _,) {
+        Widget loadingWdt = const SizedBox.shrink();
 
-          if (viewModel.loading) {
-            loadingWdt = const LoadingBlurWdt();
-          }
-          return Stack(
+        if (viewModel.loading) {
+          loadingWdt = const LoadingBlurWdt();
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('uVetClassifier'),
+          ),
+          body: Stack(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -72,24 +73,28 @@ class HomePage extends StatelessWidget {
                           builder: (context, productList, _) {
                             List<Widget> list = [];
                             if (productList != null) {
-                              if(productList.isEmpty) {
-                                list = [const ProductTile(
-                                  prefixIcon:
-                                  Icon(Icons.assignment_late_outlined),
-                                  text: 'No products',
-                                  fn: null,
-                                )];
+                              if (productList.isEmpty) {
+                                list = [
+                                  const ProductTile(
+                                    prefixIcon:
+                                        Icon(Icons.assignment_late_outlined),
+                                    text: 'No products',
+                                    fn: null,
+                                  )
+                                ];
                               } else {
                                 list = productList.map((e) {
                                   String product =
                                       e['product_id'] + ' - ' + e['name'];
                                   return Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    padding:
+                                        const EdgeInsets.only(bottom: 8.0),
                                     child: ProductTile(
-                                      prefixIcon:
-                                      const Icon(Icons.assignment_outlined),
+                                      prefixIcon: const Icon(
+                                          Icons.assignment_outlined),
                                       text: product,
-                                      fn: () => viewModel.navigateToProductDetails(e),
+                                      fn: () => viewModel
+                                          .navigateToProductDetails(e),
                                     ),
                                   );
                                 }).toList();
@@ -106,9 +111,9 @@ class HomePage extends StatelessWidget {
               ),
               loadingWdt,
             ],
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
