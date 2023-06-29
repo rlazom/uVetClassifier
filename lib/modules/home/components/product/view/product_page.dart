@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../../common/widgets/loading_blur_wdt.dart';
 import '../../../widgets/product_tile.dart';
 import '../view_model/product_view_model.dart';
+import '../widgets/product_field.dart';
 
 class ProductPage extends StatelessWidget {
   final ProductViewModel viewModel;
@@ -141,47 +142,6 @@ class ProductPage extends StatelessWidget {
           ),
         );
       }),
-    );
-  }
-}
-
-class ProductField extends StatelessWidget {
-  final TextEditingController fieldCtrl;
-  final Widget? prefixIcon;
-  final String? label;
-  final String? hint;
-
-  const ProductField({
-    super.key,
-    required this.fieldCtrl,
-    this.label,
-    this.hint,
-    this.prefixIcon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            // textInputAction: TextInputAction.search,
-            maxLines: null,
-            decoration: InputDecoration(
-              labelText: label,
-              hintText: hint,
-              prefixIcon: prefixIcon,
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: fieldCtrl.clear,
-              ),
-            ),
-            // textAlign: TextAlign.center,
-            controller: fieldCtrl,
-            // onSubmitted: (_) {},
-          ),
-        )
-      ],
     );
   }
 }
