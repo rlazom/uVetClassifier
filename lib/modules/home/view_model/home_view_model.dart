@@ -80,7 +80,15 @@ class HomeViewModel extends LoaderViewModel {
     markAsSuccess();
   }
 
+  addProduct() {
+    navigator.toRoute(HomeRoutes.product);
+  }
+
   navigateToProductDetails(Map product) {
     navigator.toRoute(HomeRoutes.product, arguments: product);
+  }
+
+  navigateToCloud() {
+    navigator.toRoute(CloudRoutes.root);
   }
 }

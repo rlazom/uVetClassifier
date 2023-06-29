@@ -15,15 +15,24 @@ class HomePage extends StatelessWidget {
     return ChangeNotifierProvider<HomeViewModel>(
       create: (context) => HomeViewModel(),
       child: Consumer<HomeViewModel>(builder: (context, viewModel, _,) {
+        if (viewModel.normal) {
+          viewModel.scheduleLoadService(() => viewModel.loadData(context: context));
+          // return _buildSplash(viewModel, context);
+        }
+
         Widget loadingWdt = const SizedBox.shrink();
 
         if (viewModel.loading) {
           loadingWdt = const LoadingBlurWdt();
         }
 
+
         return Scaffold(
           appBar: AppBar(
-            title: const Text('uVetClassifier'),
+            title: const Text('Unified Veterinary Classifier'),
+            actions: [
+              IconButton(onPressed: viewModel.navigateToCloud, icon: const Icon(Icons.cloud_outlined))
+            ],
           ),
           body: Stack(
             children: [
@@ -84,14 +93,41 @@ class HomePage extends StatelessWidget {
                                 ];
                               } else {
                                 list = productList.map((e) {
-                                  String product =
-                                      e['product_id'] + ' - ' + e['name'];
+                                  String product = e['product_id'] + ' - ' + e['name'];
+                                  String? tagStr  = e['classification']?.trim();
+                                  int barcodes  = ((e['m_barcode'] ?? []) as List).length;
+                                  print('product: "$product", barcodes: "$barcodes"');
+
+                                  Widget? suffixWdt;
+                                  if(barcodes == 0) {
+                                    suffixWdt = const FittedBox(child: Icon(Icons.qr_code, color: Colors.orange));
+                                  }
+
+                                  Widget? tagWdt;
+                                  if(tagStr != null) {
+                                    tagWdt = Padding(
+                                      padding: const EdgeInsets.only(right: 4.0),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white12,
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                                          child: Text(tagStr, style: const TextStyle(fontSize: 10.0)),
+                                        ),
+                                      ),
+                                    );
+                                  }
+
                                   return Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 8.0),
                                     child: ProductTile(
                                       prefixIcon: const Icon(
                                           Icons.assignment_outlined),
+                                      suffixIcon: suffixWdt,
+                                      tag: tagWdt,
                                       text: product,
                                       fn: () => viewModel
                                           .navigateToProductDetails(e),
@@ -111,6 +147,14 @@ class HomePage extends StatelessWidget {
               ),
               loadingWdt,
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: (viewModel.loading || viewModel.normal)
+                ? null
+                : viewModel.addProduct,
+            tooltip: 'Add Product',
+            backgroundColor: (viewModel.loading || viewModel.normal) ? Colors.grey : null,
+            child: const Icon(Icons.add),
           ),
         );
       }),

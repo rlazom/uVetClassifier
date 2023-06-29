@@ -66,6 +66,9 @@ dependencies:
   # A plugin for barcode scanning support on Android and iOS. Supports barcodes, QR codes, etc.
   flutter_barcode_scanner: ^2.0.0
 
+  # Dialogs for picking and saving files in Android and in iOS.
+  flutter_file_dialog: ^3.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

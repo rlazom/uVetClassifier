@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ProductTile extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final Widget? tag;
   final String text;
   final VoidCallback? fn;
   final VoidCallback? suffixFn;
@@ -11,6 +12,7 @@ class ProductTile extends StatelessWidget {
     super.key,
     required this.prefixIcon,
     this.suffixIcon,
+    this.tag,
     required this.text,
     this.fn,
     this.suffixFn,
@@ -29,6 +31,8 @@ class ProductTile extends StatelessWidget {
             child: FittedBox(child: suffixIcon),
           )),
         );
+      } else {
+        suffixWdt = suffixIcon!;
       }
 
       suffixWdt = Expanded(
@@ -73,6 +77,8 @@ class ProductTile extends StatelessWidget {
                 ),
               ),
             ),
+            if(tag != null)
+              tag!,
             suffixWdt,
           ],
         ),

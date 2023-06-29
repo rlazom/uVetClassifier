@@ -24,22 +24,26 @@ class ProductViewModel extends LoaderViewModel {
   loadData({BuildContext? context, bool forceReload = false}) async {
     super.loadData();
     debugPrint('ProductViewModel - loadData()...');
+    List<Future> list = [];
 
     if (context != null && productNotifier.value == null) {
       var routeArguments = ModalRoute.of(context)!.settings.arguments;
-      productNotifier.value = routeArguments as Map;
-      debugPrint('ProductViewModel - loadData()...DONE - productNotifier: "${productNotifier.value}"');
+      if(routeArguments != null) {
+        productNotifier.value = routeArguments as Map;
+        debugPrint(
+            'ProductViewModel - loadData()...DONE - productNotifier: "${productNotifier
+                .value}"');
 
-      productIdCtrl.text = productNotifier.value?['product_id'] ?? '';
-      productNameCtrl.text = productNotifier.value?['name'] ?? '';
-      providerCtrl.text = productNotifier.value?['provider'] ?? '';
-      classificationCtrl.text = productNotifier.value?['classification'] ?? '';
-      productImageNotifier.value = productNotifier.value?['image'];
+        productIdCtrl.text = productNotifier.value?['product_id'] ?? '';
+        productNameCtrl.text = productNotifier.value?['name'] ?? '';
+        providerCtrl.text = productNotifier.value?['provider'] ?? '';
+        classificationCtrl.text =
+            productNotifier.value?['classification'] ?? '';
+        productImageNotifier.value = productNotifier.value?['image'];
+
+        list.add(loadBarcodes());
+      }
     }
-
-    List<Future> list = [
-      loadBarcodes(),
-    ];
 
     await Future.wait(list);
     markAsSuccess();
@@ -74,13 +78,19 @@ class ProductViewModel extends LoaderViewModel {
     debugPrint('addBarcode() - barcodeScanResult: "$barcode"');
 
     if(barcode != '-1') {
-      markAsLoading();
+      String? productUuid = productNotifier.value?['uuid'];
+      List<Map<String,dynamic>>? data;
 
-      String productUuid = productNotifier.value?['uuid'];
-      debugPrint('addBarcode() - addBarcodeToProduct(barcode: "$barcode")...');
-      debugPrint('addBarcode() - addBarcodeToProduct(productUuid: "$productUuid")...');
-      List<Map<String,dynamic>>? data = await dbService.addBarcodeToProduct(barcode: barcode, productUuid: productUuid);
-      debugPrint('addBarcode() - addBarcodeToProduct()...DONE - data: "$data"');
+      if(productUuid != null) {
+        markAsLoading();
+
+        debugPrint('addBarcode() - addBarcodeToProduct(barcode: "$barcode")...');
+        debugPrint('addBarcode() - addBarcodeToProduct(productUuid: "$productUuid")...');
+        data = await dbService.addBarcodeToProduct(barcode: barcode, productUuid: productUuid);
+        debugPrint('addBarcode() - addBarcodeToProduct()...DONE - data: "$data"');
+      } else {
+        data = [{'id': null, 'barcode': barcode, 'id_product': null}];
+      }
 
       if(data != null && data.isNotEmpty) {
         List<Map<String, dynamic>>? currentBarcodes = productBarcodesNotifier.value ?? [];
@@ -94,14 +104,21 @@ class ProductViewModel extends LoaderViewModel {
     markAsSuccess();
   }
 
-  deleteBarcode(String uuid) async {
-    markAsLoading();
+  deleteBarcode({String? uuid, required String barcode}) async {
     debugPrint('deleteBarcode()...');
-    String barcodeUuid = uuid.trim();
+    String? barcodeUuid = uuid?.trim();
     debugPrint('deleteBarcode() - deleteBarcodeUuid("$barcodeUuid")...');
+    List<Map<String,dynamic>>? data;
 
-    List<Map<String,dynamic>>? data = await dbService.deleteBarcodeUuid(barcodeUuid);
-    debugPrint('deleteBarcode() - deleteBarcodeUuid()...DONE - data: "$data"');
+    if(barcodeUuid != null) {
+      markAsLoading();
+      data = await dbService.deleteBarcodeUuid(barcodeUuid);
+      debugPrint('deleteBarcode() - deleteBarcodeUuid()...DONE - data: "$data"');
+    } else {
+      data = [{'id': null,'barcode': barcode, 'id_product': null}];
+    }
+
+
     // productNotifier.value = data['name'] + ' - ' + data['product_id'] + ')';
     if(data != null && data.isNotEmpty) {
       List<Map<String, dynamic>>? currentBarcodes = productBarcodesNotifier.value;
@@ -114,19 +131,21 @@ class ProductViewModel extends LoaderViewModel {
   }
 
   saveProduct() async {
-    debugPrint('saveProduct()...');
+    bool newProduct = productNotifier.value == null;
+    debugPrint('saveProduct(${newProduct ? 'NEW' : 'UPDATE'})...');
     markAsLoading();
 
-    String productUuid = productNotifier.value?['uuid'];
+    String? productUuid = productNotifier.value?['uuid'];
     String id = productIdCtrl.text;
     String name = productNameCtrl.text;
     String? provider = providerCtrl.text.isEmpty ? null : providerCtrl.text;
     String? classification = classificationCtrl.text.isEmpty ? null : classificationCtrl.text;
     String? image = productImageNotifier.value;
+    List<String> barcodes = productBarcodesNotifier.value?.map((e) => e['barcode'].toString()).toList() ?? [];
 
     debugPrint('saveProduct() - updateProduct()...');
-    await dbService.updateProduct(productUuid: productUuid, productId: id, name: name, provider: provider, classification: classification, image: image);
-    debugPrint('saveProduct() - updateProduct()...DONE');
+    bool? data = await dbService.upsertProduct(productUuid: productUuid, productId: id, name: name, provider: provider, classification: classification, image: image, barcodes: barcodes);
+    debugPrint('saveProduct() - updateProduct()...DONE - data: "$data"');
 
     productNotifier.value?['product_id'] = productIdCtrl.text;
     productNotifier.value?['name'] = productNameCtrl.text;
@@ -134,5 +153,20 @@ class ProductViewModel extends LoaderViewModel {
     productNotifier.value?['classification'] = classificationCtrl.text;
 
     markAsSuccess();
+    navigator.pop();
+  }
+
+  deleteProduct() async {
+    debugPrint('deleteProduct()...');
+    markAsLoading();
+
+    String productUuid = productNotifier.value?['uuid'];
+
+    debugPrint('deleteProduct() - deleteProduct()...');
+    bool? data = await dbService.deleteProduct(productUuid: productUuid);
+    debugPrint('deleteProduct() - deleteProduct()...DONE - data: "$data"');
+
+    markAsSuccess();
+    navigator.pop();
   }
 }

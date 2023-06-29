@@ -31,14 +31,19 @@ class ProductPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: ValueListenableBuilder<Map?>(
-                valueListenable: viewModel.productNotifier,
-                builder: (context, product, _) {
-                  return Text(product == null ? '-' : product['name']);
-                }),
+              valueListenable: viewModel.productNotifier,
+              builder: (context, product, _) {
+                return Text(product == null ? 'New Product' : product['name']);
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: viewModel.saveProduct,
                 icon: const Icon(Icons.save),
+              ),
+              IconButton(
+                onPressed: viewModel.deleteProduct,
+                icon: const Icon(Icons.delete_forever_outlined, color: Colors.red,),
               ),
             ],
           ),
@@ -102,7 +107,7 @@ class ProductPage extends StatelessWidget {
                               ];
                             } else {
                               list = barcodes.map((e) {
-                                String uuid = e['id'].toString().trim();
+                                String? uuid = e['id']?.toString().trim();
                                 String barcode = e['barcode'].toString().trim();
 
                                 return Padding(
@@ -112,8 +117,8 @@ class ProductPage extends StatelessWidget {
                                     suffixIcon: const Icon(Icons.clear),
                                     text: barcode,
                                     fn: null,
-                                    suffixFn: () =>
-                                        viewModel.deleteBarcode(uuid),
+                                    suffixFn: () => viewModel.deleteBarcode(
+                                        uuid: uuid, barcode: barcode),
                                   ),
                                 );
                               }).toList();
