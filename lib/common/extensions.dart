@@ -11,22 +11,22 @@ import '../l10n/app_localizations.dart';
 
 extension StringX on String {
   Color hexToColor() =>
-      Color(int.parse(this.substring(1, 7), radix: 16) + 0xFF000000);
+      Color(int.parse(substring(1, 7), radix: 16) + 0xFF000000);
 
   int toInt() => int.parse(this);
 
   Uri toUri() => Uri.parse(this);
 
   String toShortString() {
-    return this.split('.').last.toLowerCase();
+    return split('.').last.toLowerCase();
   }
 
   String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 
   DateTime fromTimeStamp() {
-    return DateTime.fromMillisecondsSinceEpoch(this.toInt() * 1000);
+    return DateTime.fromMillisecondsSinceEpoch(toInt() * 1000);
   }
 
   String get normalize {
@@ -37,19 +37,19 @@ extension StringX on String {
 }
 
 extension IntX on num {
-  String toStringAndFill({int length = 2, String value = '0'}) => this.toString().padLeft(length, value);
+  String toStringAndFill({int length = 2, String value = '0'}) => toString().padLeft(length, value);
 }
 
 extension DoubleX on double {
   double truncateToDecimals(int decimals) =>
-      double.parse(this.toStringAsFixed(decimals));
+      double.parse(toStringAsFixed(decimals));
 }
 
 extension DurationX on Duration {
   String toTimeFormattedString() {
-    String twoDigitSeconds = this.inSeconds.remainder(60).toStringAndFill();
-    String twoDigitMinutes = '${this.inMinutes.remainder(60).toStringAndFill()}:';
-    String twoDigitHours = this.inHours == 0 ? '' : '${this.inHours.toStringAndFill()}:';
+    String twoDigitSeconds = inSeconds.remainder(60).toStringAndFill();
+    String twoDigitMinutes = '${inMinutes.remainder(60).toStringAndFill()}:';
+    String twoDigitHours = inHours == 0 ? '' : '${inHours.toStringAndFill()}:';
 
     String finalStr = '$twoDigitHours$twoDigitMinutes$twoDigitSeconds';
     return finalStr;
@@ -63,7 +63,7 @@ extension ColorX on Color {
 }
 
 extension DateTimeX on DateTime {
-  int get toTimeStamp => this.millisecondsSinceEpoch ~/ 1000;
+  int get toTimeStamp => millisecondsSinceEpoch ~/ 1000;
 }
 
 

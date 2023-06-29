@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier, debugPrint;
-import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/foundation.dart' show ChangeNotifier;
+// import 'package:flutter/foundation.dart' show ChangeNotifier, debugPrint;
+// import 'package:collection/collection.dart' show IterableExtension;
 
 import '../../model/user.dart';
 
@@ -28,12 +29,12 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  _checkAllReloaded(String moduleStatus, int current, int total) {
-    debugPrint('UserProvider - fetchRemoteData() - $moduleStatus - $current/$total - FINISHED');
-    if (current == total) {
-      debugPrint('UserProvider - fetchRemoteData() - ALL!!! - FINISHED');
-    }
-  }
+  // _checkAllReloaded(String moduleStatus, int current, int total) {
+  //   debugPrint('UserProvider - fetchRemoteData() - $moduleStatus - $current/$total - FINISHED');
+  //   if (current == total) {
+  //     debugPrint('UserProvider - fetchRemoteData() - ALL!!! - FINISHED');
+  //   }
+  // }
 
   void setServicesToReload(int value) {
     servicesToReload = value;

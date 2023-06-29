@@ -36,14 +36,14 @@ class CloudViewModel extends LoaderViewModel {
   }
 
   loadFile() async {
-    print('loadFile()...');
+    // print('loadFile()...');
     const params = OpenFileDialogParams(
       dialogType: OpenFileDialogType.document,
       fileExtensionsFilter: ['txt'],
       // sourceType: SourceType.,
     );
     final filePath = await FlutterFileDialog.pickFile(params: params);
-    print('loadFile() - filePath: "$filePath"');
+    // print('loadFile() - filePath: "$filePath"');
 
     if (filePath != null) {
       fileNotifier.value = filePath;
@@ -56,7 +56,7 @@ class CloudViewModel extends LoaderViewModel {
       for (var line in lines) {
         final columns = line.split('\t');
         if(line.trim().isNotEmpty) {
-          print('loadFile() - line: "$line"');
+          // print('loadFile() - line: "$line"');
 
           final id = columns[0].trim();
           final name = columns[1].trim();
@@ -75,7 +75,7 @@ class CloudViewModel extends LoaderViewModel {
   }
 
   insertProducts() async {
-    print('insertProducts()...');
+    // print('insertProducts()...');
 
     List<Map> newProducts = List.from(productListNotifier.value ?? []);
 
@@ -84,7 +84,7 @@ class CloudViewModel extends LoaderViewModel {
 
       List<Future> list = [];
       for (Map product in newProducts) {
-        print('insertProducts() - product: "$product"');
+        // print('insertProducts() - product: "$product"');
 
         final id = product['product_id'].trim();
         final name = product['name'].trim();

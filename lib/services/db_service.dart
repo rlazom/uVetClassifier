@@ -23,15 +23,15 @@ class DbService {
 
   Future initialize() async {
     await Supabase.initialize(
-      url: supabase_project_api_url,
-      anonKey: supabase_project_anon_key,
+      url: supabaseProjectApiUrl,
+      anonKey: supabaseProjectAnonKey,
     );
     _supabase = Supabase.instance.client;
   }
 
   Future<Map?> searchByBarcode(String barcode) async {
     debugPrint('DbService - searchByBarcode()...');
-    var response;
+    Map? response;
     Map? data = {};
 
     debugPrint(
@@ -107,7 +107,7 @@ class DbService {
   Future<List<Map<String, dynamic>>?> searchByProductUuid(
       String productUuid) async {
     debugPrint('DbService - searchByProductUuid()...');
-    var response;
+    List? response;
     List<Map<String, dynamic>>? data;
 
     debugPrint(
@@ -127,14 +127,14 @@ class DbService {
       return null;
     }
 
-    data = response.map((e) => e).cast<Map<String, dynamic>>().toList();
+    data = response?.map((e) => e).cast<Map<String, dynamic>>().toList();
     return data;
   }
 
   Future<List<Map<String, dynamic>>?> addBarcodeToProduct(
       {required String barcode, required String productUuid}) async {
     debugPrint('DbService - addBarcodeToProduct()...');
-    var response;
+    List? response;
     List<Map<String, dynamic>>? data;
 
     debugPrint(
@@ -153,13 +153,13 @@ class DbService {
       return null;
     }
 
-    data = response.map((e) => e).cast<Map<String, dynamic>>().toList();
+    data = response?.map((e) => e).cast<Map<String, dynamic>>().toList();
     return data;
   }
 
   Future<List<Map<String, dynamic>>?> deleteBarcodeUuid(String uuid) async {
     debugPrint('DbService - deleteBarcodeUuid()...');
-    var response;
+    List? response;
     List<Map<String, dynamic>>? data;
 
     debugPrint(
@@ -179,7 +179,7 @@ class DbService {
       return null;
     }
 
-    data = response.map((e) => e).cast<Map<String, dynamic>>().toList();
+    data = response?.map((e) => e).cast<Map<String, dynamic>>().toList();
     return data;
   }
 
@@ -192,7 +192,7 @@ class DbService {
       required String? image,
       List<String>? barcodes}) async {
     debugPrint('DbService - upsertProduct()...');
-    var response;
+    List? response;
 
     String uuid = productUuid ?? const Uuid().v1();
     debugPrint(
@@ -235,7 +235,7 @@ class DbService {
 
   Future<bool?> deleteProduct({required String productUuid,}) async {
     debugPrint('DbService - deleteProduct()...');
-    var response;
+    List? response;
 
     debugPrint('DbService - deleteProduct() - productUuid: "$productUuid"');
 

@@ -6,20 +6,20 @@ class User {
   String? lastName;
   String? email;
   String? image;
-  bool? is_active;
-  bool? is_staff;
-  bool? is_superuser;
-  List<Permission>? list_permissions;
+  bool? isActive;
+  bool? isStaff;
+  bool? isSuperuser;
+  List<Permission>? listPermissions;
   String? phone;
-  List<Permission>? user_permissions;
+  List<Permission>? userPermissions;
   String? username;
   String? token;
   String? refreshToken;
   String? renewalToken;
   List<Map<String,dynamic>> identities;
 
-  User({this.id, this.firstName, this.lastName, this.email, this.image, this.is_active,
-    this.is_staff, this.is_superuser, this.phone, this.list_permissions, this.user_permissions,
+  User({this.id, this.firstName, this.lastName, this.email, this.image, this.isActive,
+    this.isStaff, this.isSuperuser, this.phone, this.listPermissions, this.userPermissions,
     this.username, this.token, this.refreshToken, this.renewalToken, this.identities = const []});
 
   String? get fullName => '$firstName $lastName';
@@ -32,12 +32,12 @@ class User {
         lastName: responseData['last_name'],
         email: responseData['email'],
         image: responseData['image'] ?? '',
-        is_active: responseData['is_active'],
-        is_staff: responseData['is_staff'],
-        is_superuser: responseData['is_superuser'],
+        isActive: responseData['is_active'],
+        isStaff: responseData['is_staff'],
+        isSuperuser: responseData['is_superuser'],
         phone: responseData['phone'] ?? '',
-        list_permissions: List<Permission>.from(responseData['list_permissions'].map((model)=> Permission.fromJson(model))),
-        user_permissions: List<Permission>.from(responseData['user_permissions'].map((model)=> Permission.fromJson(model))),
+        listPermissions: List<Permission>.from(responseData['list_permissions'].map((model)=> Permission.fromJson(model))),
+        userPermissions: List<Permission>.from(responseData['user_permissions'].map((model)=> Permission.fromJson(model))),
         username: responseData['username'],
         token: responseData['token'],
         refreshToken: responseData['refresh_token'],
@@ -53,12 +53,12 @@ class User {
       'last_name': lastName,
       'email': email,
       'image': image,
-      'is_active': is_active,
-      'is_staff': is_staff,
-      'is_superuser': is_superuser,
+      'is_active': isActive,
+      'is_staff': isStaff,
+      'is_superuser': isSuperuser,
       'phone': phone,
-      'list_permissions': list_permissions == null ? [] : List<String>.from(list_permissions!.map((model)=> model.toJson())),
-      'user_permissions': user_permissions == null ? [] : List<String>.from(user_permissions!.map((model)=> model.toJson())),
+      'list_permissions': listPermissions == null ? [] : List<String>.from(listPermissions!.map((model)=> model.toJson())),
+      'user_permissions': userPermissions == null ? [] : List<String>.from(userPermissions!.map((model)=> model.toJson())),
       'username': username,
       'token': token,
       'refresh_token': refreshToken,

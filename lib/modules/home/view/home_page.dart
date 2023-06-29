@@ -96,7 +96,7 @@ class HomePage extends StatelessWidget {
                                   String product = e['product_id'] + ' - ' + e['name'];
                                   String? tagStr  = e['classification']?.trim();
                                   int barcodes  = ((e['m_barcode'] ?? []) as List).length;
-                                  print('product: "$product", barcodes: "$barcodes"');
+                                  // print('product: "$product", barcodes: "$barcodes"');
 
                                   Widget? suffixWdt;
                                   if(barcodes == 0) {

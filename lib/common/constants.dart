@@ -103,7 +103,7 @@ class FlexUrlStripe {
 /// Colors ---------------------------------------------------------------------
 class FlexColors {
   const FlexColors._();
-  Color get appPrimaryColor => Color(0xFF009FE3);
+  Color get appPrimaryColor => const Color(0xFF009FE3);
   Color get workoutCardBackgroundColor => '#1E1E1E'.hexToColor();
   Color get workoutCardInnerContainerColor => '#303030'.hexToColor();
   Color get darkGreyColor => '#262626'.hexToColor();
@@ -112,7 +112,7 @@ class FlexColors {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          stops: [0.4174, 0.93],
+          stops: const [0.4174, 0.93],
           colors: ['#000000'.hexToColor(), '#2B2B2B'.hexToColor()],
         ),
       );
