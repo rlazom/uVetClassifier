@@ -2,18 +2,44 @@ import 'package:flutter/material.dart';
 
 class ProductTile extends StatelessWidget {
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final String text;
   final VoidCallback? fn;
+  final VoidCallback? suffixFn;
 
   const ProductTile({
     super.key,
     required this.prefixIcon,
+    this.suffixIcon,
     required this.text,
     this.fn,
+    this.suffixFn,
   });
 
   @override
   Widget build(BuildContext context) {
+    Widget suffixWdt = const SizedBox.shrink();
+    if (suffixIcon != null) {
+      if (suffixFn != null) {
+        suffixWdt = InkWell(
+          customBorder: const CircleBorder(),
+          onTap: suffixFn,
+          child: Center(child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: FittedBox(child: suffixIcon),
+          )),
+        );
+      }
+
+      suffixWdt = Expanded(
+        flex: 1,
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: suffixWdt,
+        ),
+      );
+    }
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white12,
@@ -47,6 +73,7 @@ class ProductTile extends StatelessWidget {
                 ),
               ),
             ),
+            suffixWdt,
           ],
         ),
       ),

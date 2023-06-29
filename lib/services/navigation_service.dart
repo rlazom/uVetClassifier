@@ -23,9 +23,9 @@ class NavigationService {
   Future<T?> pushNamedAndRemoveUntilHome<T>(String routeTo) async {
     return state!.pushNamedAndRemoveUntil(
         routeTo,
-        (Route<dynamic> route) => routeTo == HomeModule.route
+        (Route<dynamic> route) => routeTo == HomeRoutes.root
             ? false
-            : route.settings.name == HomeModule.route);
+            : route.settings.name == HomeRoutes.root);
   }
 
   pop({BuildContext? context, var arguments}) {

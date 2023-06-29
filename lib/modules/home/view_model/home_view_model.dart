@@ -6,6 +6,7 @@ import 'package:u_vet_classifyer/common/extensions.dart';
 
 import '../../../common/providers/loader_state.dart';
 import '../../../common/providers/user_provider.dart';
+import '../../../common/routes.dart';
 import '../../../services/db_service.dart';
 
 class HomeViewModel extends LoaderViewModel {
@@ -77,5 +78,9 @@ class HomeViewModel extends LoaderViewModel {
     // productNotifier.value = data['name'] + ' - ' + data['product_id'] + ')';
     productListNotifier.value = data;
     markAsSuccess();
+  }
+
+  navigateToProductDetails(Map product) {
+    navigator.toRoute(HomeRoutes.product, arguments: product);
   }
 }

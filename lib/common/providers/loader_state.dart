@@ -33,7 +33,11 @@ abstract class LoaderViewModel extends ChangeNotifier {
 
   LoaderState get state => _state;
 
-  loadData({BuildContext? context, bool forceReload = false});
+  loadData({BuildContext? context, bool forceReload = false}) {
+    if (!normal) {
+      markAsLoading();
+    }
+  }
 
   @protected
   void updateState(LoaderState state, {bool emitEvent = true}) {

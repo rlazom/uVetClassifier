@@ -29,9 +29,9 @@ class MainViewModel extends LoaderViewModel {
     if (itsFirstTime) {
       sharedPreferencesService.setItsFirstTime(false);
       // navigator.toRoute(OnBoardingPage.route, pushAndReplace: true);
-      navigator.toRoute(HomeModule.route, pushAndReplace: true);
+      navigator.toRoute(HomeRoutes.root, pushAndReplace: true);
     } else {
-      navigator.toRoute(HomeModule.route, pushAndReplace: true);
+      navigator.toRoute(HomeRoutes.root, pushAndReplace: true);
     }
   }
 }

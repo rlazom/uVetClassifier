@@ -89,7 +89,7 @@ class HomePage extends StatelessWidget {
                                       prefixIcon:
                                       const Icon(Icons.assignment_outlined),
                                       text: product,
-                                      fn: () {},
+                                      fn: () => viewModel.navigateToProductDetails(e),
                                     ),
                                   );
                                 }).toList();
