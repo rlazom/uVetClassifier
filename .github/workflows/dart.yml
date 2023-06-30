@@ -58,7 +58,7 @@ jobs:
       #  run: dart test
         
       - name: Build APK
-        run: flutter build apk
+        run: flutter build apk --release --build-number ${{ github.run_number }}
 
       - name: Retrieve Release Version
         id: versionstep
