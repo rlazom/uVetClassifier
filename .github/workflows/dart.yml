@@ -60,10 +60,16 @@ jobs:
       - name: Build APK
         run: flutter build apk
 
+      - name: Retrieve Release Version
+        id: versionstep
+        run: |
+          VERSION=$(more pubspec.yaml | grep version: | cut -d ' ' -f2)
+          echo "::set-output name=VERSION::$VERSION"
+
       - name: Publish APK
         uses: actions/upload-artifact@v2
         with:
 #          name: uVetClassifier_v${{ env.APP_VERSION }}.apk
 #          name: ${{ env.APP_NAME }}_v${{ steps.version.outputs.version }}.apk
-          name: ${{ env.APP_NAME }}.apk
+          name: ${{ env.APP_NAME }}_v${{ steps.versionstep.outputs.VERSION }}.apk
           path: build/app/outputs/flutter-apk/app-release.apk
