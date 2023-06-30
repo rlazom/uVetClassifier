@@ -64,7 +64,8 @@ jobs:
         id: versionstep
         run: |
           VERSION=$(more pubspec.yaml | grep version: | cut -d ' ' -f2)
-          echo "::set-output name=VERSION::$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+#          echo "::set-output name=VERSION::$VERSION"
 
       - name: Publish APK
         uses: actions/upload-artifact@v2
@@ -73,4 +74,3 @@ jobs:
 #          name: ${{ env.APP_NAME }}_v${{ steps.version.outputs.version }}.apk
           name: ${{ env.APP_NAME }}_v${{ steps.versionstep.outputs.VERSION }}.apk
           path: build/app/outputs/flutter-apk/app-release.apk
-          tag: ${{ steps.versionstep.outputs.VERSION }}
