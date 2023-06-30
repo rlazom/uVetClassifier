@@ -13,6 +13,10 @@ on:
 
 env:
   APP_NAME: uVetClassifier
+  JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/12.0.2-3/x64
+  JAVA_HOME_12_X64: /opt/hostedtoolcache/Java_Zulu_jdk/12.0.2-3/x64
+  FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.10.1-x64
+  PUB_CACHE: /opt/hostedtoolcache/flutter/stable-3.10.1-x64/.pub-cache
 
 jobs:
   build:
