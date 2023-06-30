@@ -73,3 +73,4 @@ jobs:
 #          name: ${{ env.APP_NAME }}_v${{ steps.version.outputs.version }}.apk
           name: ${{ env.APP_NAME }}_v${{ steps.versionstep.outputs.VERSION }}.apk
           path: build/app/outputs/flutter-apk/app-release.apk
+          tag: ${{ steps.versionstep.outputs.VERSION }}
